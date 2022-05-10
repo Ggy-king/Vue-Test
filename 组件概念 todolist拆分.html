@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>组件就是页面上的一部分 当一个项目比较大的时候我们就需要拆组件 划分多个文件</p>
+    <p>mount是挂载的意思 类似执行</p>
+    <p>.component('名字',{对象}) 创建组件 方便维护</p>
+    <p>props用于接收参数</p>
+    <div id="root"></div>
+
+</body>
+<script>
+    // 1 在标签上若想其属性与上数据绑定需要使用v-bind:
+    const App = Vue.createApp({
+        data() {
+            return {
+                inputValue: '',
+                list: []
+            }
+        },
+        methods: {
+            handlaAppItem() {
+                this.list.push(this.inputValue);
+                this.inputValue = '';
+            }
+        },
+        template: `
+        <div>
+            <input v-model = "inputValue"/>
+            <button v-on:click = "handlaAppItem"
+            v-bind:title = "inputValue"
+            >增加</button>
+            <ul>
+                <todo-item 
+                
+                v-for = "(item,index) of list" 
+                v-bind:content = "item"
+                v-bind:index = "index"
+                />
+            </ul>    
+        </div>
+        `
+    });
+    App.component('todo-item', {
+        props: ['content', 'index'],   //用于接收参数
+        template: `
+        <li>{{content}} -- {{index}}</li>
+        `
+    })
+    App.mount('#root')
+
+
+</script>
+
+</html>

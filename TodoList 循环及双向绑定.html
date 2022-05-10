@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+
+
+</body>
+<script>
+    // 1 通过li标签把list循环打印 v-for 循环打印（元素 of 列表）元素后也可以接下标打印index
+    // Vue.createApp({
+    //     data() {
+
+    //         return {
+    //             list: ['hello', 'world', 'dell', 'lee']
+    //         }
+    //     },
+    //     template: `
+    //     <ul>
+    //         <li v-for = "(item, index) of list">{{item}} {{index}}</li>
+    //     </ul>
+    //     `
+    // }).mount('#root')
+
+    // 2 双向绑定 v-model 将template 与 data 中设的事件绑定
+    Vue.createApp({
+        data() {
+            return {
+                inputValue: '',
+                list: []
+            }
+        },
+        methods: {
+            handlaAppItem() {
+                this.list.push(this.inputValue);
+                this.inputValue = '';
+            }
+        },
+        template: `
+        <div>
+            <input v-model = "inputValue"/>
+            <button v-on:click = "handlaAppItem">增加</button>
+            <ul>
+                <li v-for = "(item, index) of list">{{item}} {{index}}</li>
+            </ul>
+        </div>
+        `
+    }).mount('#root')
+
+
+</script>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p> 1 生命周期函数：在某一时刻会自动执行的函数 一共八个基本生命周期函数
+
+        3 beforeCreate()函数在分析完绑定事件代码后执行，为生命周期函数
+        4 created()在分析完一些双向绑定等特殊事件后执行,为生命周期函数
+        5 beforeMount()函数在内容渲染到页面之前执行，为生命周期函数
+        6 mounted()函数在内容被渲染到页面之后执行，为生命周期函数
+        7 beforeUpdate()函数 当data 中数据发生改变的时候自动执行
+        8 update()函数 当data中数据改变完成后 且页面渲染完成后执行
+        9 beforeUnmount()函数 在Vue失效之前执行的函数
+        10 unmounted()函数 Vue失效且DOM完全销毁时执行的函数</p>
+    <div id="root">
+        <!-- 可以把template模板直接写在此标签里 -->
+        <!-- <div v-on:click='handleItemClick'>{{message}}</div> -->
+    </div>
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: 'Hello world'
+                }
+            },
+
+            // 实例生成之前
+            beforeCreate() {
+                console.log('beforeCreate')
+            },
+            // 实例生成之后
+            created() {
+                console.log('created');
+            },
+            // 有模板，则在模板已经被变成函数之后执行 即在组件内容被渲染到页面之前执行
+            beforeMount() {
+                console.log('beforeMount')
+            },
+            // 在组件内容被渲染到页面之后执行
+            mounted() {
+                console.log('mounted');
+            },
+            //当data 中数据发生改变的时候立刻自动执行
+            beforeUpdate() {
+                console.log('beforeUpdate')
+            },
+            //当data 中数据发生变化后 页面重新渲染后自动执行
+            updated() {
+                console.log('updated');
+            },
+            // 当vue应用失效时自动执行的函数
+            beforeUnmount() {
+                console.log('beforeUnmount');
+            },
+            //当vue应用失效时且Dom完全销毁时自动执行的函数
+            unmounted() {
+                console.log('unmounted');
+            },
+            methods: {
+                handleItemClick() {
+                    alert('click');
+                }
+            },
+            template: `<div v-on:click='handleItemClick'>{{message}}</div>`
+        });
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>

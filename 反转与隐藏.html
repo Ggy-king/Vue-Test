@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!-- vue是面向数据编程 -->
+    <p>
+        templata模板里调用事件 需要使用v-on: 表示绑定事件
+    </p>
+    <p>v-if 表示存在与否</p>
+    <div id="root"></div>
+    <div id="root1"></div>
+</body>
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                content: 'hello world'
+            }
+        },
+        methods: {
+            handleBtnClick() {
+                this.content = this.content.split('').reverse().join('');
+            }
+
+        },
+        template: `
+        <div>
+            {{content}}
+            <button v-on:click = "handleBtnClick">反转</button>
+        </div>
+            `
+    }).mount('#root');
+
+    Vue.createApp({
+        data() {
+            return {
+                show: true,
+                content: '我可以隐藏或显示'
+            }
+        },
+        methods: {
+            handriBtnClick() {
+                this.show = !this.show;
+            }
+        },
+        template: `
+        <div>
+            <span v-if = 'show'>{{content}}</span>
+            <button v-on:click = "handriBtnClick">显示/隐藏</button>
+        </div>
+        `
+    }).mount('#root1')
+
+
+</script>
+
+</html>
+
+</html>
