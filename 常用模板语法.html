@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>1 template模板 其中变量用{{}}表示 对应的是data中的变量</p>
+    <p>2 v-html="" 在页面某标签内绑定html事件 即此时模板中的代码也可以执行</p>
+    <p>3 v-bind绑定变量绑定属性 语法简写 : 就是一个冒号</p>
+    <p>4 v-once渲染第一次的内容将不在发生改变 即固定无法改变</p>
+    <p>5 v-if = "show" 即是否展示该内容</p>
+    <p>6 v-on: 事件绑定 绑定后方法一定要写在methods中 语法简写 v-on === @</p>
+    <p>
+        7 动态属性 []绑定 在return中返回变量值
+    </p>
+    <p>8 修饰符 如.prevent</p>
+    <p>4 模板中表达式都可以使用</p>
+    <div id="root"></div>
+    <div id="root2"></div>
+    <div id="root3"></div>
+    <div id="root4"></div>
+
+</body>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '<strong>你好</strong>'
+            }
+        },
+        template: `<div v-html = "message" v-bind:title = "message"></div>`
+    });
+    const vm = app.mount('#root');
+    // 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+    const app2 = Vue.createApp({
+        data() {
+            return {
+                message: 'hello',
+                // show:false;
+            }
+        },
+        template: `<div v-once>{{Math.max(1,2)}}</div>`
+    });
+    const vm2 = app2.mount('#root2');
+    ///////////////////////////////////////////////////////////////////////
+    const app3 = Vue.createApp({
+        data() {
+            return {
+                content: 'hello',
+                name: 'title1',
+                event: 'mouseenter'
+
+            }
+        },
+        methods: {
+            handleClick() {
+                alert('click');
+            }
+        },
+        template: `<div 
+          @[event] = "handleClick" 
+          :[name] = "content"
+        >
+        {{content}}
+        </div>`
+    });
+    const vm3 = app3.mount('#root3');
+    // 4
+
+    const app4 = Vue.createApp({
+        data() {
+            return {
+                content: 'hello',
+                name: 'title1',
+                event: 'mouseenter'
+
+            }
+        },
+        methods: {
+            handleClick(e) {
+                // e.preventDefault();  可以直接写@click.prevent = "handleClick"
+                alert('click');
+            }
+        },
+        template: `
+        <form action = "https://baidu.com" @click.prevent = "handleClick">
+            <button type = "submit">提交</botton>
+                   
+        </form>`
+    });
+    const vm4 = app4.mount('#root4');
+</script>
+
+</html>
