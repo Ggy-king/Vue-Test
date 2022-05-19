@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>
+        1 methods 中this指向vue实例
+    </p>
+    <p>2 进行异步操作需要用到watch 其可以监听一些上面定义的变量等数据的改变</p>
+    <p>computed methods都能实现的用computed 因为有缓存</p>
+    <p>computed watch都能实现的也用computed 因为代码更简洁</p>
+    <div id="root"></div>
+</body>
+<script>
+    // data methods computed watcher    
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: "hello world",
+                count: 1,
+                price: 15,
+                newprice: 12,
+                newTotal: 10
+            }
+        },
+        watch: {
+            price() {                              //把会改变的量作为函数传递
+                setTimeout(() => {
+                    console.log('price changed');
+                }, 3000)
+            },
+            newprice(current, prev) {
+                this.newTotal = current * this.newprice;
+            }
+        },
+        computed: {                                          //computed计算属性  直接书写时不用加括号
+            // 计算属性只有当其计算依赖的内容发生改变时才会发生改变
+            total() {
+                return this.count * this.price;
+            },
+            newTotal() {
+                return
+            }
+        },
+        methods: {
+            // 方法是只要当页面有渲染时就会重新改变
+            formatString(string) {
+                return string.toUpperCase();   //大写
+            }
+        },
+        template:
+            `<div>{{formatString(message)}}  {{newTotal}}  {{total}}</div>`
+    });
+    const vm = app.mount('#root');
+
+</script>
+
+</html>
