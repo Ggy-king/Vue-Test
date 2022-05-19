@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .red {
+            color: red;
+
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .green {
+            color: green;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>
+        字符串变量改变样式
+        对象改变样式
+    </p>
+    <p>
+        vue中行内样式可以像css中一样去写
+        依然可以绑定 包括对象推荐
+    </p>
+    <div id="root"></div>
+
+</body>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                classString: 'red',
+                classObject: { red: true, blue: true },   //此时对应class = "red pink"
+                classArray: ['red', 'pink', { green: true }]
+            }
+        },
+        //v-bind: 双向绑定 等价于简写 :
+        template: `
+            <div v-bind:class = "classString">Hello world <demo class = "green"/></div>
+            <div :class = "classObject">Hello world</div>
+            <div :class = "classArray">Hello world</div>
+            `
+    });
+    //添加组件
+    // 被调用的一方为子组件
+    app.component('demo', {
+        template: `<div>1</div>
+        <div :class = "$attrs.class">2</div>`
+        //此时在上面的demo中添加的class属性失效 其上的class只能对一个适用 
+        // 解决方法在组件子属性上绑定$attrs.class 即绑定父属性上面的值
+    })
+    const vm = app.mount('#root');
+</script>
+
+</html>
