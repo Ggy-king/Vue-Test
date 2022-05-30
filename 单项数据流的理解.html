@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div id="root"></div>
+    <p>属性不支持驼峰式语法 用横线来命名 大写会转化为小写</p>
+    <p>但在标签内接收时需要用驼峰来接收</p>
+    <!-- 属性传content-abc  接收contentAbc -->
+    <p>单项数据流</p>
+    <p>父组件可以向子组件传递数据 但是子组件无法修改</p>
+    <p>解决办法 在子组件中在定义一次</p>
+    <script>
+        // v-bind="params" 等价于 :a="params.a" .....
+        const app = Vue.createApp({
+            data() {
+                return {
+                    params: {
+                        a: 123,
+                        b: 456,
+                        c: 789
+                    },
+                    num: 1
+                }
+            },
+            template: `<div><test v-bind="params"/></div>
+            <div><content :count="num"/></div>`
+        });
+
+        app.component('test', {
+            props: ['a', 'b', 'c'],
+            template: `<div>{{a}}--{{b}}--{{c}}</div>`
+        });
+
+        app.component('content', {
+            props: ['count'],
+            // 此处count不可被修改
+            data() {
+                return {
+                    myCount: this.count,
+                }
+            },
+            template: `<div @click="myCount += 1">{{myCount}}</div>`
+        });
+
+        app.mount("#root");
+    </script>
+
+</body>
+
+</html>

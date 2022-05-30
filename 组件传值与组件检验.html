@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>text 这个名字不可以做组件名</p>
+    <p>静态传参 动态传参 取决于是否绑定数据 静态传参不易改变属类型 如数字会被认作字符串</p>
+    <p>type类型 required:true 必须传入参数</p>
+    <p>defualt: 默认值 即你不传入参数时页面展示的内容</p>
+    <p>validator:  一般后接函数 做更深层的校验</p>
+    <p></p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 1234,
+                    // num: () => { alert(123) }
+
+                }
+            },
+            template:
+                `
+            <div ><test :content="num" /></div>
+            `
+        });
+
+        app.component('test', {
+            // props: ['content'],
+            // String Boolean Array Object Function Symbol
+            props: {
+                // content: String,         //判断传递类型是否为字符串 不是的话会发出警告
+                content: {
+                    type: Function,
+                    required: true,
+                    default: 123,
+                    validator: function (value) {
+                        return value < 1000;
+                    }
+                }
+            },
+
+            methods: {
+                handleClick() {
+                    this.content();
+                }
+            },
+
+            template: `<div @click="this.handleClick">{{content}}</div>`
+        })
+
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>

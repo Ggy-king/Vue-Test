@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+
+    <p>select - option 下拉表单</p>
+    <p>option中的值默认有value = '多少的'</p>
+    <p>multiple 多选</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: '',
+                    message1: [],
+                    options: [
+                        {
+                            text: 'A', value: 'A',
+                        },
+                        {
+                            text: 'B', value: { value: 'B' }
+                        },
+                        {
+                            text: 'C', value: 'C',
+                        }
+                    ]
+                }
+            },
+            methods: {
+
+            },
+            template: `
+            <div>
+                {{message}}
+                <select v-model="message">
+                    <option disabled value = ' '>请选择内容</option>
+                    <option value = 'A'>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select><br/>
+                {{message1}}
+                <select v-model="message1" multiple>
+                    <option v-for="item in options" :value="item.value">{{item.text}}</option>
+                </select>
+            </div>
+            `
+
+        });
+        const vm = app.mount('#root');
+    </script>
+
+    <p>vue支持很多属性改变</p>
+    <p>checkbox 中的选中与否只能用true于flase表示 但通过 true-value="" flase-value=""可以改变默认值</p>
+    <p>表单修饰符 .lazy 当表单失去焦点时 数据同步变化</p>
+    <p>表单修饰符 .number当我们希望input输入的类型存入数据项的时候为数字类型是</p>
+    <p>表单修饰符 .trim去除前后的空格 数据项不改变即前后空格无用</p>
+    <div id="root1"></div>
+
+    <script>
+        const app1 = Vue.createApp({
+            data() {
+                return {
+                    message: "完善自己",
+                    message1: '',
+                    message2: 123,
+                    message3: 'hello',
+
+                }
+            },
+            methods: {
+
+            },
+            template: `
+                <div>
+                    {{message}}
+                    <input type="checkbox" v-model="message" true-value="学会变通" flase-value="完善自己"><br/>
+                    {{message1}}
+                    <input v-model.lazy="message1"><br/>
+                    {{typeof message2}}
+                    <input v-model.number="message2" type=number><br/>
+                    {{message3}}
+                    <input v-model.trim="message3"><br/>
+                </div>
+                `
+        });
+        const vm1 = app1.mount('#root1');
+    </script>
+</body>
+
+</html>

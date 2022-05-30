@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>组件是可以被复用的 且相互之间不受影响 是独立的</p>
+    <p>父组件调用子组件
+        <... />
+    </p>
+    <p>全局组件只要定义了 处处可以使用 性能不高 但使用简单 建议小写字母开头中间横线间隔</p>
+    <!-- 即便你不使用全局组件 它也依然会挂载 -->
+
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            template: `
+                <div>
+                    <hello/>
+                    <hello/>
+                    <hello/>
+                    <world/>
+                </div>`
+
+
+        });   //此处创建的是APP实例
+
+        app.component('hello', {
+            data() {
+                return {
+                    Hello: 1
+                }
+            },
+
+            template: `<div @click="Hello += 1">{{Hello}}</div>`
+        });  //调用子组件 形成组件拆分
+
+        app.component('world', {
+            template: `<div>World</div>`
+        });
+
+        const vm = app.mount('#root');
+    </script>
+    <!-- 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、 -->
+
+    <p>定义局部组件是通过常量或变量赋值的形式</p>
+    <p>父组件引用时是通过components:{}调用</p>
+    <p>局部组件性能高 调用比较麻烦 建议大写字母开头驼峰命名</p>
+    <p>局部组件使用时 要做一个名字与组件名的映射 不写映射 其底层也会自动尝试帮你映射</p>
+    <div id="root1"></div>
+    <script>
+        const Counter = {     //工作习惯 定义局部组件时首字母大写
+            data() {
+                return {
+                    count: 100
+                }
+            },
+            template: `<div @click="count -= 1">{{count}}</div>`
+        };
+
+
+
+        const app1 = Vue.createApp({
+            components: {
+                Counter
+                // 调用名与常量变量名一致时简写即可
+                // 'cout':counter    不一致别忘加引号
+                // 其实你不命名 而是直接引进 调用时字母只有大小写区别 或短横线区别也可以自动映射
+            },
+            template: `
+                <div>
+                    <Counter />
+                </div>`
+
+
+        });
+
+
+
+        const vm1 = app1.mount('#root1');
+    </script>
+
+</body>
+
+</html>

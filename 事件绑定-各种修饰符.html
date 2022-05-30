@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>可以直接在模板中给函数传参</p>
+    <p>传参 同时获取原生事件对象的时候需要加$</p>
+    <p>想要同时调用多个函数的时候用逗号间隔 且必须加括号</p>
+    <!-- 事件 -->
+    <p>
+        修饰符 .stop 停止事件冒泡
+        .self 让只有属于自己的事件才会执行 其他元素不会执行 如子标签
+        .prevent 阻止默认行为
+        .capture 改变事件模式为捕获
+        .once 事件只执行一次
+        .passive 可以提升scroll滚动判断的性能
+    </p>
+    <!-- 按键 -->
+    <p>按键修饰符
+        .enter 当你按下enter建是才会触发
+        .tab tab建触发
+        .delete 删除建触发
+        down up left right esc等
+
+        <!-- @click.ctrl表示当ctrl按住时在点击才会触发事件 注意只要按住的键有ctrl就行 -->
+    </p>
+    <!-- 鼠标 -->
+    <p>鼠标修饰符
+        left right middle
+    </p>
+
+    <!-- 精确 -->
+    <p>精确修饰符 exact
+        <!-- 可以解决按键上面按键问题 更加精确 -->
+    </p>
+    <div id="root"></div>
+    <div id="root1"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                // handleBtnClick( event) {
+                //     console.log(event.target);
+                //     this.counter += 1;
+                // }
+                // handleBtnClick(num) {
+                //     this.counter += num;
+                // }
+                handleBtnClick(num, event) {
+                    console.log(event);
+                    this.counter += num;
+                },
+                handleBtnClick1() {
+                    alert(1);
+                },
+                handleDivClick() {
+                    alert('事件冒泡 修饰符.stop停止冒泡')
+                }
+            },
+            template: `
+            <div>
+              
+              <div @click.self = "handleDivClick">
+                {{counter}}
+                <button @click.stop = "handleBtnClick(2,$event),handleBtnClick1()">增加</button>
+              </div>
+            </div>`
+        });
+        const vm = app.mount("#root");
+
+        // ....................................................................................................
+        const app1 = Vue.createApp({
+
+            methods: {
+                handleKeyDownen() {
+                    console.log('enter');
+                },
+                handleKeyDownde() {
+                    console.log('delete');
+                },
+                handleClickL() {
+                    console.log('left');
+                },
+                handleClickM() {
+                    console.log('middle');
+                }
+            },
+            template: `
+            <div>
+              <input @keydown.enter = "handleKeyDownen" @keydown.delete = "handleKeyDownde"/>
+              <div @click.left = "handleClickL" @click.middle = "handleClickM">123</div>
+              <div @click.ctrl.exact = "handleClickCE">这个版本的exact有bug</div>
+            </div>`
+        });
+        const vm1 = app1.mount("#root1")
+    </script>
+
+
+</body>
+
+</html>

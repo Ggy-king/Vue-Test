@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>做渲染的时候 如需重新渲染 可以给一个key值 每次渲染时发现该值保持不变则不渲染该元素 :key = ""</p>
+    <p>数组的变更函数有很多 大多与数组的原生方法一样</p>
+    <p>循环打印10 v-for = "item in 10"</p>
+    <p>一行语句中既有for又有if for的优先级比if大if不生效 可以在嵌套一个盒子 如不想要要直接用 template>这个站位符 注意不是标签</p>
+    <p>.concat()方法可以拼接数组</p>
+    <p>.filter(元素指向元素) 改变数组中的元素为指向元素</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    listArray: ['dell', 'lee', 'teacher'],
+                    listObject: {
+                        fristname: 'dell',
+                        lastname: 'lee',
+                        job: 'teacher'
+                    }
+                }
+            },
+            methods: {
+                handleAddBtnClick() {
+                    this.listArray.push('hello');
+                    // this.listArray.pop();
+                    // this.listArray.shift();
+                    // this.listArray.unshift('hello');
+                    // this.listArray.reverse();
+                    // this.listArray.sort();
+                    // this.listArray.splice();
+
+                    // 2 直接替换数组
+                    // this.listArray = ['lisi'].concat(['kko']);    
+                    // this.listArray = ['lisi','reset'].filter(item => item === 'lisi');    
+
+                    // 3 直接更新数组的内容
+                    // this.listArray[1] = 'hello';
+
+
+                    // 直接改变对象的内容 展示出来只有一次 第二次以后覆盖
+                    this.listObject.age = 100;
+                }
+            },
+            template:
+                `
+            <div>
+                <tempalte v-for="(value ,key,index) in listObject" :key = "index">
+                <div v-if = "key !== 'lastname'">
+                    {{value}} -- {{key}} -- {{index}} 
+                </div>
+                <template>
+                <div v-for="(item,index) in listArray" :key="index">
+                    {{item}} -- {{index}} 
+                </div>
+                <div v-for = "item in 10">{{item}}</div>
+                <button @click="handleAddBtnClick">button</button>
+            </div>
+            `
+        });
+        const vm = app.mount('#root')
+
+    </script>
+</body>
+
+</html>

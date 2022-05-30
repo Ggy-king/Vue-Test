@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>input中的值与数据同时变化 一变都变为双向</p>
+    <p>textarea 使用双向绑定时单标签即可</p>
+    <p>checkbox 使用双向绑定时 绑定的内容只能为false或true 绑定内容也可以是数组 勾选谁谁添加进数组</p>
+    <p>radio 为单选 给数组会变成字符串</p>
+    <div id="root"></div>
+</body>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'hello',
+                add: [],
+                radio: ''
+            }
+        },
+        methods: {
+
+        },
+        template: `
+        <div>
+            {{message}}
+            <input v-model="message" />
+            <textarea v-model="message" /><br/>
+            {{add}}
+            jack <input type="checkbox" v-model="add" value="jack" />
+            alex <input type="checkbox" v-model="add" value="alex" />
+            dell <input type="checkbox" v-model="add" value="dell" /><br/>
+            {{radio}}
+            jack <input type="radio" v-model="radio" value="jack" />
+            alex <input type="radio" v-model="radio" value="alex" />
+            dell <input type="radio" v-model="radio" value="dell" />
+        </div>
+        `
+    });
+    const vm = app.mount('#root');
+
+    
+
+</script>
+
+</html>
