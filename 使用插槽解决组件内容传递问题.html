@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>solt 插槽 就是将一些内容从父组件插入子组件中</p>
+    <p>solt 是没有办法绑定事件的 解决办法可以使用外层在嵌套别的标签</p>
+    <p>在solt中 其作用域看其内调用的数据的位置</p>
+    <!-- 即 父模板里调用的数据属性 调用的都是父模板里的数据 -->
+    <!-- 即 子模板里调用的数据属性 调用的都是子模板里的数据 -->
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    text: '提交'
+                }
+            },
+            template: `
+                <myform>
+                    <div>{{text}}</div>
+                </myform>
+                <myform>
+                    <button>{{text}}</button>
+                </myform>
+                <myform>
+                    <test />
+                </myform>
+                <myform>
+                </myform>
+            `
+        });
+
+        app.component('test', {
+            template: `<div>test</div>`
+            //    还可以传递子组件在其内
+        })
+
+        app.component('myform', {
+            methods: {
+                handleClick() {
+                    alert(123);
+                }
+            },
+            template: `
+            <div>
+                <input />
+                <span @click="handleClick">
+                    <slot>默认值</slot>
+                </span>
+                </div>
+            `
+            // 在slot标签中书写内容可以当做默认值传入
+        });
+
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>

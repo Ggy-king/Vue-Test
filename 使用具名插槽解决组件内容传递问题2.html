@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <!-- 每一个小的插入片段为具名插槽 -->
+    <p>1 按某种顺序排列的时候 在子组件中书写你想要的顺序</p>
+    <p>2 子父组件中slot都需要命名</p>
+    <p>3 父组件中的命名方式为冒号不加引 子组件为等号加引</p>
+    <p>4 父组件中书写需要使用站位符包裹</p>
+    <div id="root"></div>
+</body>
+<script>
+    const app = Vue.createApp({
+        //    实现将父元素的内容按某种顺序插入子元素进行显示
+        template: `
+            <layout>
+                <template v-slot:header>
+                    <div>header</div>
+                </template>
+                <template v-slot:footer>
+                    <div>footer</div>
+                </template>
+            </layout>
+                
+            `
+    });
+
+    app.component('layout', {
+        template: `
+            <div>
+                <slot name="header"></slot>
+                <div>content</div>
+                <slot name="footer"></slot>
+            </div>
+            `
+    });
+
+    const vm = app.mount('#root');
+</script>
+
+</html>

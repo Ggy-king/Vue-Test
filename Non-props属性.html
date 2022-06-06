@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>当你在父组件定义一个数据但子组件并没有接收时 该数据会变成子组件最外层标签的属性 即non-props属性</p>
+    <p>当子组件有多个标签时 non-props属性不生效</p>
+    <p>v-bind="$attrs" 属性可以将父组件上的所有数据继承为该元素的属性</p>
+    <p>v-bind:msg="$attrs.msg" 单独绑定 等价于:msg="$attrs.msg"</p>
+    <p>inheritAttrs: false, //该属性可以取消子组件接收父组件的值</p>
+    <div id="root"></div>
+    <script>
+        // Non-props属性  可以将父组件上定义的数据作为子组件的属性
+        const app = Vue.createApp({
+            template: `<div><counter msg="hello" msg2="world"/></div>`
+        });
+
+        app.component('counter', {
+            // inheritAttrs: false,   //该属性可以取消子组件接收父组件的值
+            mounted() {
+                console.log(this.$attrs.msg);  //$attrs在子组件中别的地方也可以用
+            },
+            template: `<div v-bind:msg="$attrs.msg">Counter</div>
+                       <div v-bind="$attrs">Counter</div>
+                       <div :msg2="$attrs.msg2">Counter</div>`
+        });
+
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>

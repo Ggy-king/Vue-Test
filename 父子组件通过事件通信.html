@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div id="root">
+
+    </div>
+    <p>子组件向父组件通信 $emit 向外传递事件</p>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 1
+                }
+            },
+            methods: {
+                handleAdd( // this.count += param2;
+                    count
+                ) {
+                    // this.count += param2;
+                    this.count = count;
+                }
+            },
+
+            // template: `<div><counter :count = "count"/ @add-one="handleAddOne"></div>`
+            template: `<div><counter :count = "count" @add="handleAdd"/></div>`
+
+            // @add-one="" 接收监听并执行
+        });
+
+
+        app.component('counter', {
+            props: ['count'],
+
+            // emits:['add','minus'],    //emits可以定义组件  起到提示左右
+            emits: {                          //还可以传对象 对象中在包括函数进行更多的操作     
+                add: (count) => {
+                    if (count < 0) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+
+            methods: {
+                handleItemClick() {
+                    // this.$emit('addOne');
+                    // this.$emit('add', 2,3);    //可以额外传参
+                    this.$emit('add', this.count + 3);
+
+                    // $emit 向外部传递事件
+                }
+            },
+
+            template: `<div @click="handleItemClick">{{count}}</div>`
+        });
+
+
+        const vm = app.mount('#root');
+    </script>
+
+
+
+    <div id="root1"></div>
+    <script>
+        const app1 = Vue.createApp({
+            data() {
+                return {
+                    count: 1
+                }
+            },
+            template: `<counter v-model="count"/>`
+            // template: `<counter v-model:add="count"/>`  //改名
+            // 以v-model做链接 vue专属modelValue进行传值
+        });
+
+
+        app1.component('counter', {
+            props: ['modelValue'],   //modelValue 指接收v-model传下的值 想要改命名在v-model后加:名字
+            methods: {
+                handleClick() {
+                    // 以下写法为固定写法 update
+                    this.$emit('update:modelValue', this.modelValue + 3);
+                }
+            },
+
+            template: `<div @click="handleClick">{{modelValue}}</div>`
+        });
+
+
+        const vm1 = app1.mount('#root1');
+    </script>
+
+</body>
+
+</html>
