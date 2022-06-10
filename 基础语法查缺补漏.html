@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>只有当页面都加载完成之后 才存在dom这个概念 使所以要获取到dom 尽量在mounted中写代码</p>
+    <p>在你想获取的dom节点上加一个ref</p>
+    <p>ref也可以获取组件引用 获取后如可以调用子组件的方法</p>
+    <p></p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 1
+                }
+            },
+            mounted() {
+                // 该写法是打印获取dom节点
+                // 书写时是$refs
+                console.log(this.$refs.count),
+                    // 对dom节点进行操作  一般不建议操作dom
+                    this.$refs.count.innerHTML = 'Hello',
+                    // 慎重使用
+                    console.log(this.$refs.common.sayHello())
+            },
+            template:
+                `
+            <div ref="count">
+                {{count}}
+                <common-item ref="common"/>
+            </div>
+            `
+        });
+
+        app.component('common-item', {
+            methods: {
+                sayHello() {
+                    alert('你好');
+                }
+            },
+            template:
+                `
+            <div>hello world</div>
+            `
+
+
+        })
+        const vm = app.mount('#root')
+    </script>
+
+
+
+    <p>provide/inject 多级组件传值 用provide设 inject接</p>
+    <p>把provide变成函数这种方法缺陷性其具有v-once特性 传递的数值永远是第一次的 不会改变</p>
+    <div id="root1"></div>
+    <script>
+        const app1 = Vue.createApp({
+            data() {
+                return {
+                    count: 1
+                }
+            },
+            // provide: {
+            //     count: 1
+            // },
+            // 如果想要把data中的数据传递下来以provide的形式 需要把provide变成函数
+            provide(){
+                return {
+                    count : this.count
+                }
+            },
+            template:
+                `
+            <div>
+                <child :count="count"/>
+            </div>
+            `
+        });
+
+        app1.component('child', {
+            // props: ['count'],
+            // template:
+            //     `
+            // <child-child :count="count"/>
+            // `
+
+            template:
+                `
+            <child-child />
+            `
+        });
+        app1.component('child-child', {
+            // props: ['count'],
+            // template:
+            //     `
+            // <div>{{count}}</div>
+            // `
+
+            inject: ['count'],
+            template:
+                `
+            <div>{{count}}</div>
+            `
+        });
+        const vm1 = app1.mount('#root1')
+    </script>
+
+</body>
+
+</html>

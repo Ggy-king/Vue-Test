@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>动态组件 component</p>
+    <p>缓存数据 keep-alive 一般结合component</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    currentItem: 'input-item'
+                }
+            },
+            methods: {
+                handleClick() {
+                    if (this.currentItem === "input-item") {
+                        this.currentItem = "common-item"
+                    } else {
+                        this.currentItem = "input-item"
+                    }
+                },
+            },
+            template:
+                // 动态组件 component 缺点一些你的输入切换时会丢失
+                //keep-alive 缓存标签 缓存数据
+                `
+                <keep-alive>
+                    <component :is="currentItem" />
+                </keep-alive>
+                <button @click="handleClick">切换</button>
+                `
+            // < input - item v- show="currentItem === 'input-item'" />
+            // <common-item v-show="currentItem === 'common-item'" />
+            // 写成这样太麻烦
+        });
+
+        app.component('input-item', {
+            template:
+                `
+            <input />
+            `
+        });
+
+        app.component('common-item', {
+            template:
+                `
+            <div>Hello world</div>
+            `
+        });
+
+        const vm = app.mount('#root');
+
+    </script>
+
+
+
+
+
+    <!-- 异步组件 -->
+    <div id="root1"></div>
+    <script>
+        const app1 = Vue.createApp({
+
+            template:
+                `
+            <div>
+                <common-item />
+                <async-common-item />
+            </div>
+            `
+
+        });
+
+        app1.component('common-item', {
+            template:
+                `
+            <div>Hello world</div>
+            `
+        });
+        app1.component('async-common-item', Vue.defineAsyncComponent(() => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({
+                        template: `<div>this is an asyn component</div>`
+                    })
+                }, 4000)
+            })
+        }))
+
+        const vm1 = app1.mount('#root1');
+
+    </script>
+</body>
+
+</html>

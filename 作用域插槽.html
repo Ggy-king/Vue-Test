@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>v-slot:简写可以用一个#表示</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            template: `
+                <layout>
+                    <template #header>
+                        <div>header</div>
+                    </template>
+                    <template #footer>
+                        <div>footer</div>
+                    </template>
+                </layout>
+                    
+                `
+        });
+
+        app.component('layout', {
+            template: `
+                <div>
+                    <slot name="header"></slot>
+                    <div>content</div>
+                    <slot name="footer"></slot>
+                </div>
+                `
+        });
+
+        const vm = app.mount('#root');
+    </script>
+
+
+    <p>作业域插槽可以使父组件使用子组件中的数据</p>
+    <div id="root1"></div>
+    <!-- `
+    <layout v-slot="{item}">
+        <span>{{item}}</span>
+    </layout>
+    ` -->
+    <script>
+        const app1 = Vue.createApp({
+            template:
+                `
+                <layout v-slot="slotProps">
+                    <span>{{slotProps.item}}</span>
+                </layout>
+             `
+            //  可以解构直接写
+
+        });
+
+        app1.component('layout', {
+            data() {
+                return {
+                    list: [1, 2, 3]
+                }
+            },
+            template: `
+            <div>
+                <slot v-for="item in list" :item="item">
+            <div>    
+                `
+        });
+
+        const vm1 = app1.mount('#root1');
+    </script>
+</body>
+
+</html>

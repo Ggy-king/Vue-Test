@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<style>
+    .div {
+        display: block;
+    }
+
+    /* 动画 */
+    @keyframes leftToRight {
+        0% {
+            transform: translateX(-100px);
+        }
+
+        50% {
+            transform: translateX(-50px);
+        }
+
+        0% {
+            transform: translateX(0px);
+        }
+
+    }
+
+    .animation {
+        animation: leftToRight 3s;
+    }
+
+
+    /* 过渡 */
+    .transition {
+        transition: 3s background-color ease;
+
+    }
+
+    .blue {
+        background: blue;
+    }
+
+    .green {
+        background: green;
+    }
+</style>
+
+<body>
+    <div id="root"></div>
+    <div id="root1"></div>
+</body>
+<script>
+    // 动画 过渡实现
+    const app = Vue.createApp({
+        data() {
+            return {
+                animate: {
+                    animation: false
+                },
+                transitions: {
+                    transition: true,
+                    green: true,
+                    blue: false
+                }
+            }
+        },
+        methods: {
+            handleClickOne() {
+                this.animate.animation = !this.animate.animation
+            },
+            handleClickTwo() {
+                this.transitions.green = !this.transitions.green;
+                this.transitions.blue = !this.transitions.blue;
+
+            }
+        },
+        template:
+            `
+            <div :class="animate">Hello World</div>
+            <div :class="transitions">Hello World</div>
+            <button @click="handleClickOne">切换动画</button>
+            <button @click="handleClickTwo">切换过渡</button>
+            `
+    });
+
+    const vm = app.mount('#root');
+
+
+    // 过渡实现方法二  行内样式写
+    const app1 = Vue.createApp({
+        data() {
+            return {
+                styleObj: {
+                    background: 'blue'
+                }
+            }
+        },
+        methods: {
+            handleClick() {
+                if (this.styleObj.background === 'blue') {
+                    this.styleObj.background = 'green'
+                } else {
+                    this.styleObj.background = 'blue'
+                }
+            }
+        },
+        template:
+            `
+           <div class="transition" :style="styleObj">hello world</div>
+           <button @click="handleClick">切换</button>
+            `
+    });
+
+    const vm1 = app1.mount('#root1');
+</script>
+
+</html>
