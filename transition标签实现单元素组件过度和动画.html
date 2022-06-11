@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+<!-- <style>
+    /* 固定写法 */
+    .v-enter-from {
+        opacity: 0;
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity 3s ease-out;
+    }
+
+    /* 了解其底层原理 发现这个也可以删去  */
+    /* .v-enter-to {
+        opacity: 1;
+    } */
+
+    /* .v-leave-from {
+        opacity: 1;
+    } */
+
+       
+    .v-leave-to {
+        opacity: 0;
+    }
+</style> -->
+
+<style>
+    @keyframes shake {
+        0% {
+            transform: translateX(-100px);
+        }
+
+        50% {
+            transform: translateX(-50px);
+        }
+
+        0% {
+            transform: translateX(50px);
+        }
+    }
+
+    .hello-leave-active {
+        transition: opacity 3s ease-out;
+    }
+
+    .hello-leave-to {
+        opacity: 0;
+    }
+
+
+
+    .hello-enter-to {
+        /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+        animation: shake 3s;
+    }
+</style>
+
+<body>
+    <p>使用transition标签配合css实现固定效果</p>
+    <p>使用transition标签配合css实现过渡仅一个v-enter-active不可以 但是动画可以</p>
+    <p>可以不采取v-写法 需要对transition 进行name=""重命名</p>
+    <div id="root"></div>
+    <script>
+        // 单元素 单组件的入场出场动画
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: false
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show;
+                }
+            },
+            template:
+                `
+            <transition name="hello">
+                <div v-if="show">Hello World</div>
+            </transition>
+            <button @click="handleClick">切换</button>
+            `
+        });
+
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>
