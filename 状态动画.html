@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>状态动画 即1变为10 中间会有23456的数值变化 而不是直接变过来</p>
+    <p>通过数据来控制一些动画效果</p>
+    <div id="root"></div>
+
+</body>
+<script>
+    // 动画 过渡实现
+    const app = Vue.createApp({
+        data() {
+            return {
+                number: 1,
+                animateNumber: 1
+
+            }
+        },
+        methods: {
+            handleClickOne() {
+                this.number = 10;
+
+                if (this.animateNumber < this.number) {
+                    const animation = setInterval(() => {
+                        this.animateNumber += 1;
+                        if (this.animateNumber == 10) {
+                            clearInterval(animation);
+                        }
+                    }, 100)
+                }
+
+            }
+
+
+        },
+        template:
+            `
+            <div>{{animateNumber}}</div>
+            <button @click="handleClickOne">增加</button>
+            
+            `
+    });
+
+    const vm = app.mount('#root');
+
+
+
+</script>
+
+</html>

@@ -50,19 +50,27 @@
         }
     }
 
-    .hello-leave-active {
-        transition: opacity 3s ease-out;
+    .hello-enter-from {
+        color: red;
     }
 
-    .hello-leave-to {
-        opacity: 0;
+    .hello-enter-active {
+        transition: all 3s ease-in;
     }
-
-
 
     .hello-enter-to {
         /* animation: name duration timing-function delay iteration-count direction fill-mode; */
         animation: shake 3s;
+    }
+
+    .hello-leave-active {
+        color: red;
+        transition: opacity 3s ease-out;
+        transition: all 3s ease-in;
+    }
+
+    .hello-leave-to {
+        opacity: 0;
     }
 </style>
 
@@ -70,6 +78,7 @@
     <p>使用transition标签配合css实现固定效果</p>
     <p>使用transition标签配合css实现过渡仅一个v-enter-active不可以 但是动画可以</p>
     <p>可以不采取v-写法 需要对transition 进行name=""重命名</p>
+    <p>动画和过渡可以一起实现</p>
     <div id="root"></div>
     <script>
         // 单元素 单组件的入场出场动画

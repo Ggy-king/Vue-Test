@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<style>
+    @keyframes shake {
+        0% {
+            transform: translateX(-100px);
+        }
+
+        50% {
+            transform: translateX(-50px);
+        }
+
+        0% {
+            transform: translateX(50px);
+        }
+    }
+
+    .v-enter-from {
+        color: red;
+    }
+
+    .v-enter-active {
+        animation: shake 3s;
+        transition: color 10s ease-in;
+    }
+
+    .v-enter-to {}
+
+    .v-leave-from {}
+
+    .v-leave-action {
+        color: red;
+        animation: shake 3s;
+        transition: all 3s ease-in;
+    }
+
+    .v-leave-to {}
+</style>
+
+<body>
+    <p>type属性 判断以谁为准如果是transition 则其时间执行完毕立马完成动画效果</p>
+    <p>:duration 不管css如何定义时间 都以duration为准 其后可以接对象</p>
+    <p>:css="false" 取消css效果</p>
+    <p>用js做动画 @before-enter="方法" @enter @after-enter @before-leave @leave @after-leave</p>
+    <!-- 注意前后只能接收一个参数el 中间可以两个el和done -->
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: false
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show;
+                },
+                handleBeforeEnter(el) {
+                    el.style.color = "red";
+                },
+                handleEnterActive(el, done) {
+                    // done的作用是告诉vue动画已经结束
+                    const animation = setInterval(() => {
+                        const color = el.style.color;
+                        if (color === "red") {
+                            el.style.color = "green";
+                        } else {
+                            el.style.color = "red";
+                        }
+                    }, 1000)
+                    setTimeout(() => {
+                        clearInterval(animation);
+                        done();
+                    }, 3000)
+                },
+
+                handleAfterEnter() {
+                    console.log(123);
+                }
+
+            },
+            template:
+                // <transition type="animation">
+                // <transition :duration="1000">
+                `
+            <transition :duration="{enter:1000,leave:50}" 
+                :css="false"
+                @before-enter="handleBeforeEnter"
+                @enter="handleEnterActive"
+                @after-enter="handleAfterEnter"
+            >
+                <div v-if="show">Hello World</div>
+            </transition>
+            <button @click="handleClick">切换</button>
+            `
+        });
+
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>

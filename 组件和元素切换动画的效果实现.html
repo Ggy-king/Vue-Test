@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+<style>
+    .v-leave-to {
+        opacity: 0;
+    }
+
+    .v-enter-from {
+        opacity: 0;
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity 1s ease-in;
+    }
+
+    .v-leave-from,
+    .v-enter-to {
+        opacity: 1;
+    }
+</style>
+
+<body>
+    <!-- 多个单元素 -->
+    <p>mode="out-in" 先出在进 mode="in-out" 先进在出</p>
+    <!-- mode针对于多元素而言 -->
+    <p>appear 使其下元素一刷新页面时就有动画效果</p>
+
+    <!-- 多个单组件 -->
+    <p>组件的写法可以和元素写法一样</p>
+    <p>还可以用 component :is 语法 动态绑定组件切换</p>
+    <div id="root"></div>
+    <script>
+        const ComponentA = {
+            template:
+                `
+            <div>展示一组件</div>
+            `
+
+        };
+        const ComponentB = {
+            template:
+                `
+            <div>展示二组件</div>
+            `
+
+        };
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: false,
+                    component: 'component-a'
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show;
+                },
+
+                handleClick() {
+                    this.show = !this.show;
+                },
+
+                handleClickTwo() {
+                    if (this.component === 'component-a') {
+                        this.component = 'component-b'
+                    } else {
+                        this.component = 'component-a'
+                    }
+                }
+            },
+            components: {
+                'component-a': ComponentA,
+                'component-b': ComponentB
+            },
+            template:
+                `
+                
+                <transition mode="out-in" appear>
+                    <component :is="component" />
+                </transition>
+                <button @click="handleClickTwo">切换</button>
+                    
+                <transition mode="out-in" appear>
+                    <component-a v-if="show" />
+                    <component-b v-else="show" />
+                </transition>
+                <button @click="handleClick">切换</button>
+
+                <transition mode="out-in" appear>
+                    <div v-if="show">Hello World</div>
+                    <div v-else="show">Bye World Two</div>
+                </transition>
+                <button @click="handleClick">切换</button>
+                `
+        });
+
+        const vm = app.mount('#root');
+    </script>
+
+
+
+</body>
+</htm>

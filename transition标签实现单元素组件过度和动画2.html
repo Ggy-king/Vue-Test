@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- 引入animate动画效果库 -->
+</head>
+
+<body>
+    <p>如果css标签想随心所欲的命名 则需要在vue中额外定义</p>
+    <p>enter-from-class="你想写的名字"</p>
+    <p>这种写法可以搭配第三方库实现更好的效果</p>
+    <div id="root"></div>
+</body>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                show: false
+            }
+        },
+        methods: {
+            handleClick() {
+                this.show = !this.show;
+            }
+        },
+        template:
+            `
+        <div>
+            <transition 
+                enter-active-class="animate__animated animate__zoomInDown"
+                leave-active-class="animate__animated animate__rotateOut"
+            >    
+                <div v-show="show">Hello World</div>
+            </transition>
+           <button @click="handleClick">切换</button> 
+        </div>
+        `
+    });
+
+    const vm = app.mount('#root');
+</script>
+
+</html>
