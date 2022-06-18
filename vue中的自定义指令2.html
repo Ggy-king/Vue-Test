@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<style>
+    .header {
+        position: absolute;
+    }
+</style>
+
+<body>
+    <p>实现自定义属性 v-pos="数据" 使其数据可以改变dom元素的position距离</p>
+    <p>v-abs:right=""  绑定组件属性赋值right 用binding.arg调用</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    top: 100,
+                    distance: 200
+                }
+            },
+
+            template:
+                `
+            <div>
+                <div v-pos="top" class="header">
+                    <input /> 
+                </div> 
+                <div v-abs:right="distance" class="header">
+                    <input /> 
+                </div>  
+            </div>
+            `
+        });
+
+        // 这种写法等价于下面的写法 即当组件中只有mounted和updated时
+        // app.directive('pos', () => {
+        //     el.style.top = binding.value + 'px';
+        // })
+
+        app.directive('pos', {
+            mounted(el, binding) {
+                el.style.top = binding.value + 'px';
+            },
+            // 在改变数据时生效
+            updated(el, binding) {
+                el.style.top = binding.value + 'px';
+            }
+
+        });
+
+        app.directive('abs', (el, binding) => {
+            el.style[binding.arg] = (binding.value + 'px');
+        })
+
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>

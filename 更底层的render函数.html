@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!-- render函数 -->
+    <p>template -> render -> h -> 虚拟DOM(JS对象) -> 真实DOM -> 展示到页面上</p>
+
+
+    <p>
+        虚拟Dom 是js对dom的映射 更深层次
+    <div>hello</div>
+    {
+    tagName:'div',
+    text:hello,
+    attributes:{}
+    }
+    --Vue的深层次映射利于类似week这种开发工具使用
+    </p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+
+            template:
+                `
+            <my-title :level="1">
+                hello
+            </my-title>
+            `
+        });
+        app.component('my-title', {
+            props: ['level'],
+            // render: function (createElement, context) {
+
+            // }
+
+            render() {
+                const { h } = Vue;
+
+
+                // return h('h' + this.level, {}, 'hello world');
+                return h('h' + this.level, {}, [
+                    this.$slots.default(),
+                    h('h4',{},'dell')
+                ]);
+
+                //  第一个参数为标签
+                //  第二个参数是属性  {}里可以填属性
+                // 第三个标签为内容  可以用数组表示 内容嵌套
+                // this.$slots.default() 全部插槽中的默认插槽
+                // this.$slot  具名插槽
+            }
+
+            // template:`
+            // <h1 v-if="level === 1"><slot /></h1>
+            // <h2 v-if="level === 2"><slot /></h2>
+            // <h3 v-if="level === 3"><slot /></h3>
+            // <h4 v-if="level === 4"><slot /></h4>
+            // `
+            // 上面的代码冗余 可以用render函数简单写
+        });
+
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>

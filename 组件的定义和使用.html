@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!-- app.config.globalProperties.$sayHello = 'hello world'; -->
+    <p>app.config.globalProperties.$ 对vue底层扩展全局属性 $代表该方法或属性为私有</p>
+
+    <p>plugin扩展实用性由于mixin</p>
+    <div id="root"></div>
+    <script>
+        // plugin插件 也是把通用性的功能封装起来
+        const myPlugin = {
+            // 定义一个插件 插件中install方法  install固定方法
+            install(app, options) {
+                console.log(app, options);
+                // app为vue实例
+                // options为用户自己额外的参数
+
+                app.provide('name', 'Dell Lee');
+                // 提供一个{name:'Dell Lee'}组件数据
+
+                app.directive('focus', {
+                    mounted(el) {
+                        el.focus()
+                    }
+                });
+
+                // 自定义指令
+                app.mixin({
+                    mounted() {
+                        console.log('mixin');
+                        console.log(this.$sayHello);
+                    }
+                });
+
+                app.config.globalProperties.$sayHello = 'hello world';
+                // 对vue底层扩展全局属性方法 $代表该方法或属性为私有
+            }
+        }
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 1234,
+                }
+            },
+            template:
+                `
+                <my-title />
+                `
+        });
+
+        app.component('my-title', {
+            inject: ['name'],
+            template: `<div>{{name}}   <input v-focus /></div>`
+        });
+
+        app.use(myPlugin, { name: 'dell' });
+        // vue中使用插件的方法
+
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>

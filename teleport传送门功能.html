@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+<style>
+    .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        background-color: green;
+    }
+
+    .mask {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: black;
+        opacity: .5;
+        color: aqua;
+        font-size: 50px;
+    }
+</style>
+
+<body>
+    <p>何为传送门 即可以传送到我们想去的地方</p>
+    <p>举例 当我们做一个小盒子时 想在小盒子内实现控制它的父盒子或者其他不相干的盒子时 代码只能写在小盒子里时 可以考虑传送门</p>
+    <!-- 遮罩层案例 -->
+    <p>teleport to="body" to方法 把teleport下的内容传送到某个标签上 "#hello"传送到id="hello"的标签上</p>
+
+    <div id="root"></div>
+    <div id="hello"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: false
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show;
+                }
+            },
+
+            template:
+                `
+                <div class="box">
+                    <button @click="handleClick">切换</button>
+                    <teleport to="#hello">
+                        <div v-show="show" class="mask">您好</div>
+                    </teleport>
+                </div>
+
+                `
+        });
+
+
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>

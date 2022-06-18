@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>$options 在vue做完操作后会将所有内容挂在options上</p>
+    <p>直接在vue组件中写名字定义属性 为自定义属性 this找不到 需要this.$options.名字</p>
+    <div id="root"></div>
+    <script>
+        // 1 MIxin混入 在外面定义变量 在Vue内部用mixins混入
+        // 2 mixins中的data优先级低于组件data
+        // 3 生命周期函数都会执行 先执行mixin后执行组件
+        // 4 方法与data执行顺序一致  组件优于mixin
+        // 5 自定义属性 组件的优先级高于mixin
+        // 6 app.mixin({}) 该写法为全局的写法 一般不推荐使用 维护性不高
+
+        const myMixin = {
+            data() {
+                return {
+                    number: 2,
+                    count: 222
+                }
+            },
+            created() {
+                console.log('mixin create')
+            },
+            methods: {
+
+                handleClick() {
+                    console.log('mixin handleClick')
+                }
+            },
+            numbers: 11112223,
+        }
+
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    number: 1
+                }
+            },
+            created() {
+                console.log('create')
+            },
+            mixins: [myMixin],  //此写法为局部写法 只能在该组件内调用
+            methods: {
+
+                handleClick() {
+                    console.log('handleClick')
+                }
+            },
+            numbers: 123,
+            template:
+                `
+            <div>{{number}}</div>
+            <div>{{count}}</div>
+            <child />
+            <div>{{this.$options.numbers}}</div>
+            <button @click="handleClick">增加</button>
+            `
+        });
+
+        // app.mixin({
+        //     data() {
+        //         return {
+        //             number: 2,
+        //             count: 222
+        //         }
+        //     },
+        //     created() {
+        //         console.log('mixin create')
+        //     },
+        //     methods: {
+
+        //         handleClick() {
+        //             console.log('mixin handleClick')
+        //         }
+        //     }
+        // })   //全局写法
+
+        app.component('child', {
+            mixins: [myMixin],
+            template: `<div>{{count}}</div>`
+        })
+
+        const vm = app.mount('#root')
+    </script>
+
+    <div id="root1"></div>
+    <script>
+        const myMixin1 = {
+            number1: 1,
+        }
+
+        const app1 = Vue.createApp({
+            mixins: [myMixin1],
+            number1: 2,
+            template: `
+            
+            <div>
+            
+            <div>{{this.$options.number1}}</div>
+            </div>
+            `
+        });
+
+        // 改变app策略
+        app1.config.optionMergeStrategies.number1 = (mixinVal, appValue) => {
+            // 如果mixin中有number1则优先以mixin中为准
+            // 没有则以app中的为准
+            return mixinVal || appValue;
+        }
+
+        const vm1 = app1.mount("#root1");
+    </script>
+</body>
+
+</html>

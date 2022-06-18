@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <p>对dom进行操作的时候可以采取ref的方式 但是有些没有办法被复用</p>
+    <p>directive 自定义指令</p>
+    <p></p>
+    <div id="root1"></div>
+    <script>
+
+        // 自定义组件写法--局部
+        // const directives = {
+        //     focus: {
+        //         mounted(el) {
+        //             el.focus()
+        //         }
+        //     }
+        // }
+
+        const app1 = Vue.createApp({
+            mounted() {
+                // this.refs.input.focus();
+            },
+            directives: directives,
+            template:
+                // <input ref="input"/>
+
+                `
+                <div>
+                <input v-focus/>
+                </div>
+                `
+        });
+
+
+        // 自动聚焦自定义写法--全局
+        app1.directive('focus', {
+            beforeMount(el) {
+                console.log('beforeMount')
+            },
+            mounted(el) {
+                console.log('mounted')
+                el.focus();
+
+            },
+            // 更新的渲染之前
+            beforeUpdate () {
+                console.log('beforeUpdate')
+            },
+            // 更新渲染时
+            updated () {
+                console.log('updated')
+            },
+            // 销毁之前
+            beforeUnmount(){
+                console.log('beforeUnmount')
+            },
+            // 销毁时
+            unmounted(){
+                console.log('unmounted')
+            }
+        })
+
+        const vm1 = app1.mount("#root1");
+    </script>
+
+</body>
+
+</html>
