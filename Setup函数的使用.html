@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>当我们的项目变得越来越大的时候 项目变得不好维护 与某个数据相关的代码会间隔很多行</p>
+    <p>为解决这个问题vue3引入新的API</p>
+    <p>setup函数 其内的数据方法等都会暴露在外</p>
+    <p>setup 注意此函数是在created实例化之前 故其内的this失效</p>
+    <!-- setup没有被实例化 不能调用外部 外部实例可以调用它 -->
+    <p></p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            // data() {
+            //     return {
+            //         name:'dell',
+            //         age:15
+            //     }
+            // },
+            // methods: {
+            //     sayHello(){
+
+            //     },
+            //     setName(){
+
+            //     }
+            // },
+            // computed: {
+
+            // },
+            // directives: {
+
+            // },
+            // mixin:[],
+
+
+            template: `<div @click="handle">{{content}}</div>`,
+            // created实例被完全初始化之前执行
+            // props接收组件的参数 context联系上下文
+            setup(props, context) {
+                return {
+                    content: 'dell',
+                    handle() {
+                        alert(123)
+                    }
+                }
+            }
+        });
+
+
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>
