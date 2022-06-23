@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        // toRefs
+        const app = Vue.createApp({
+            template: `
+            <div>{{name}}</div>
+            `
+            ,
+            setup(props, context) {
+                const { reactive, toRefs } = Vue;
+                const date = reactive({ name: 'dell' });
+                const { name } = toRefs(date);
+                setTimeout(() => {
+                    name.value = 'lee'
+                }, 2000);
+                return { name };
+
+            }
+        });
+        const vm = app.mount('#root');
+    </script>
+
+    <div id="root1"></div>
+    <script>
+        // toRefs
+        const app1 = Vue.createApp({
+            methods: {
+                handleChange() {
+                    alert('change')
+                }
+            },
+            template: `
+            <child 
+            app='app'
+            @change="handleChange" 
+            >parent</child>
+           `
+
+
+        });
+        app1.component('child', {
+            template: `<div @click="handleClick">123123</div>`,
+            setup(props, context) {
+                const { h } = Vue;
+                const { attrs, slots, emit } = context;
+                console.log(attrs);    // None-props属性  即组件中没有接收的props值
+                console.log(slots.default()); //slots获取模板内容
+                function handleClick() { emit('change') } //emit 向外触发事件
+                // return () => h('div', {}, slots.default())
+                return { handleClick }
+            }
+
+        })
+        const vm1 = app1.mount('#root1');
+    </script>
+
+</body>
+
+</html>

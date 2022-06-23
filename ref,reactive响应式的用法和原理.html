@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>ref reactive 响应式引用</p>
+    <p>原理 通过proxy对数据进行封装 当数据变化的e时候触发模板等内容的更新</p>
+    <p>ref 处理基础类型的数据 </p>
+    <p>reactive 处理非基础类型的数据</p>
+    <!-- 响应式的数据是可以改变后展示或使用的 -->
+    <p>readonly 使数据变成只读 不可修改</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+
+            template: `
+            <div>{{name}}</div>
+            <div>{{nameObj.age}}</div>
+            <div>{{nameArr[0]}}</div>
+            `,
+
+            setup(props, context) {
+                // // 从VUE中得到ref
+                const { ref, reactive, readonly } = Vue;
+
+                // //proxy 'dell'变成proxy({value:'dell'})的形式 这样的一个响应式引用
+                // let name = ref('dell');
+                // setTimeout(() => {
+                //     // 再次改变时需要精确到值
+                //     name.value = 'lee'
+                // }, 2000);
+                // return { name };
+
+
+                //proxy {age:1850}变成proxy({age:1850})的形式 这样的一个响应式引用
+                // reactive 数组对象等
+                const nameObj = reactive({ age: 1850 });
+                // readonly变成只读数据
+                const nameArr = readonly([000]);
+                setTimeout(() => {
+                    nameObj.age = 123465
+                    nameArr[0] = 111
+                }, 2000)
+
+                return { nameObj, nameArr };
+            }
+        });
+
+
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>

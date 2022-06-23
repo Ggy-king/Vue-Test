@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>toRefs解决更深层次的响应式 针对解构后数据</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+
+            template: `
+                <div>{{name}}</div>
+                <div>{{age}}</div>
+                `,
+
+            setup(props, context) {
+                // // 从VUE中得到ref
+                const { ref, reactive, readonly, toRefs } = Vue;
+
+                const nameObj = reactive({ name: 'dell', age: 15 });
+                // readonly变成只读数据
+
+                setTimeout(() => {
+                    nameObj.name = 'lee'
+                    nameObj.age = 18
+                }, 2000)
+
+                // 解构赋值后导出值与recative针对的对象不符
+                // toRefs proxy({name:'dell'}) ,{name:proxy({value:'dell'})} 这样的一个响应式
+                const { name, age } = toRefs(nameObj);
+                return { name, age };
+            }
+        });
+
+
+        const vm = app.mount('#root');
+    </script>
+
+</body>
+
+</html>
