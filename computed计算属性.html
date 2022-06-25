@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>computed 计算属性</p>
+    <p>计算值会修改</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                const { ref, computed } = Vue;
+                const count = ref(0);
+                const handleClick = () => {
+                    count.value += 1;
+                }
+                const countAddFive = computed({
+                    // 得到
+                    get: () => {
+                        return count.value + 5;
+                    },
+                    // 修改 当数值改变时会执行
+                    set: (param) => {
+                        count.value = param - 5;
+                    }
+                })
+                setTimeout(() => {
+                    countAddFive.value = 100;
+
+                }, 3000)
+
+                return {
+                    count, countAddFive, handleClick
+                }
+            },
+            template: `
+            <div>
+                <span @click="handleClick">{{count}}---{{countAddFive}}
+                </span>
+            </div>    
+            `
+        });
+        const vm = app.mount('#root')
+    </script>
+</body>
+
+</html>
