@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>composition API新内容</p>
+    <p>监听器watch</p>
+    <p>watch只能监视一般数据类型 像对象等需要转化成函数 如() => nameObj.name</p>
+    <p>监听可以是很多数据 但要写成数组的形式 注监听与后方执行函数都要写成数组的形式</p>
+    <p>执行函数的数组第一个皆为当前 后一个皆为原始</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                const { reactive, watch, toRefs } = Vue;
+                const nameObj = reactive({
+                    name: '高',
+                    engname: 'gao'
+                });
+
+                // watch监听 监听某数据的变化
+                // 具有一定的惰性 即刚渲染页面时的值并不会执行
+                // currentValue为当前值 prevValue为原来值
+                watch([() => nameObj.name, () => nameObj.engname], ([curname, cureng], [prename, preeng]) => {
+                    console.log(curname, prename, '------', cureng, preeng);
+                })
+
+                const { name, engname } = toRefs(nameObj);
+
+                return { name, engname }
+            },
+            template: `
+            <div>
+                <div>
+                    Name:<input v-model="name" />
+                </div>
+                <div>
+                    Name is {{name}}
+                </div>
+                <div>
+                    EnglishName:<input v-model="engname" />
+                </div>
+                <div>
+                    EnglishName is {{engname}}
+                </div>
+            </div>
+            `
+        });
+        const vm = app.mount('#root')
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

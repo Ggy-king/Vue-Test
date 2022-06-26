@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>1 立即执行 没有惰性 immediate
+        2 watchEffect会监听其内部的数据变化 变化即执行 不需要传递监听对象
+        3 只需要传递一个回调函数 不能获取之前的数据值</p>
+
+    <p>watch和watchEffect都可以用定时器清除</p>
+
+    <p>watch高级用法 可以传第三个参数写一些高级语句 如immediate:true 立即执行</p>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                const { reactive, watch, toRefs, watchEffect } = Vue;
+                const nameObj = reactive({
+                    name: '高',
+                    engname: 'gao'
+                });
+
+                watch([() => nameObj.name, () => nameObj.engname], ([curname, cureng], [prename, preeng]) => {
+                    console.log(curname, prename, '------', cureng, preeng);
+                }, {
+                    immediate: true
+                })
+
+
+                // 立即执行 没有惰性 immediate
+                // watchEffect会监听其内部的数据变化 变化即执行 不需要传递监听对象
+                // 只需要传递一个回调函数 不能获取之前的数据值
+                const stop = watchEffect(() => {
+                    console.log(nameObj.name);
+                    console.log(nameObj.engname);
+
+                    setTimeout(() => {
+                        stop();
+                    }, 5000)
+                })
+                // watch和watchEffect都可以用定时器清除
+
+
+
+
+
+                const { name, engname } = toRefs(nameObj);
+
+                return { name, engname }
+            },
+            template: `
+                <div>
+                    <div>
+                        Name:<input v-model="name" />
+                    </div>
+                    <div>
+                        Name is {{name}}
+                    </div>
+                    <div>
+                        EnglishName:<input v-model="engname" />
+                    </div>
+                    <div>
+                        EnglishName is {{engname}}
+                    </div>
+                </div>
+                `
+        });
+        const vm = app.mount('#root')
+    </script>
+</body>
+
+</html>
