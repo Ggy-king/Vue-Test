@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>beforeCreate和created 这两个在composition API中没有 因为setup函数创建时间点就在其上</p>
+    <p>onRenderTracked 新周期函数 需要收集响应式依赖时执行 每次重渲染时都会收集</P>
+    <p>onRenderTriggered 每次触发页面重新渲染时执行</p>
+    <div id="root">
+
+    </div>
+    <script>
+
+        const app = Vue.createApp({
+            // beforeMount => onBeforeMount
+            // mounted => onMounted
+            // beforeUpdate => onBeforeUpdate
+            // beforeUnmount => onBeforeUnmount
+
+            setup() {
+                const { onBeforeMount, onMounted, onBeforeUpdate, onUpdate, onBeforeUnmount,
+                    onRenderTracked, onRenderTriggered
+                } = Vue;
+                onBeforeMount(() => {
+                    console.log('onBeforeMount');
+                })
+                onMounted(() => {
+                    console.log('onMounted');
+
+                })
+                onBeforeUpdate(() => {
+                    console.log('onBeforeUpdate');
+
+                })
+                onUpdate(() => {
+                    console.log('onUpdate');
+
+                })
+                onRenderTracked(() => {
+                    console.log('onRenderTracked');
+
+                })
+                onRenderTriggered(() => {
+                    console.log('onRenderTriggered');
+
+                })
+
+                onBeforeUnmount(() => {
+                    console.log('onBeforeUnmount');
+
+                })
+            },
+
+
+            template: `<div>生命周期函数新写法 react的写法</div>`
+        });
+        const vm = app.mount('#root');
+    </script>
+</body>
+
+</html>
