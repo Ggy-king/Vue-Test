@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <p>在setup 函数中 多个父子组件传值可以采用provide 与 inject 新API提供的方法</p>
+    <p>provide 提供数据 什么类型 多少数据都可以</p>
+    <p>修改数据 注意单项数据流的概念</p>
+
+    <p>dom ref</p>
+    <p>dom 中的ref 与响应式的ref不是同一个东西 只是他们需要一起使用 可以拿到自己设的dom节点
+    </p>
+    <div id="root"></div>
+    <div id="root1"></div>
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                const { provide, ref } = Vue;
+                const name = ref('dell')
+                // 提供数据 第一个参数为名 第二个参数为值
+                provide('name', name);
+                provide('changeName', (value) => {
+                    name.value = value;
+                })
+                return {}
+
+            },
+            template: `
+                <div>
+                 <child />
+                </div>
+                `
+        })
+
+
+
+        app.component('child', {
+            setup() {
+                const { inject } = Vue;
+                // 接收参数 第二个参数为默认值
+                const name = inject('name', 'hello');
+                const changeName = inject('changeName');
+                const handleClick = () => {
+                    changeName('lee');
+                }
+                return { name, handleClick }
+            },
+            template: `
+                <div @click="handleClick">{{name}}</div>
+                `
+        })
+
+        const vm = app.mount('#root');
+
+
+
+
+        // 在compositionAPI 的语法下 获取真实的DOM元素节点
+        const a = Vue.createApp({
+            setup() {
+                const { ref, onMounted } = Vue;
+                //    固定写法 设节点为空
+                const hello = ref(null);
+                onMounted(() => {
+                    console.log(hello.value);
+                })
+                return { hello }
+
+            },
+            template: `
+                <div>
+                <div ref="hello">你好啊</div>
+                </div>
+                `
+        })
+
+
+
+        const v = a.mount('#root1');
+    </script>
+</body>
+
+</html>
