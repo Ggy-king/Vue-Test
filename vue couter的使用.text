@@ -1,0 +1,30 @@
+# 哈希路由
+
+有井号建在其中 /#/ 
+
+
+# 两种写法
+const routes = [
+#   第一种写法 正常引入
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login
+  },
+
+#   第二种写法 异步加载路由 也叫懒加载
+  {
+    path: '/about',
+    name: 'About',
+    # 异步加载路由
+    # 如果代码量不大 可以不考虑这个
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')       # 只有真正访问时才会加载该组件
+  }
+]
+
+
+1 router-link 是跳转路由标签
+<router-link to="/">Home</router-link>
+
+2 router-view 展示跳转路由后的页面
+ <router-view/>
